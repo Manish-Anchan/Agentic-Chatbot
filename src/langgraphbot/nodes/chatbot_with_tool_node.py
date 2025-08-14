@@ -14,12 +14,18 @@ class ChatbotWithToolNode:
         return {"messages":[llm_response, tool_response]}
     
 
+
     def create_chatbot(self, tools):
-        
-        llm_with_tools = self.llm.bind_tools(tools)
+        system_prompt = "Do not call any tools unless the user explicitly asks for a web search or up-to-date information."
+
+        llm_with_tools = self.llm.bind_tools(tools, tool_choice="auto")
 
         def chatbot_node(state: State):
-            return {"messages": [llm_with_tools.invoke(state["messages"])]}
+            # prepend the system prompt so the model sees the rule every call
+            messages = [{"role": "system", "content": system_prompt}] + state["messages"]
+            resp = llm_with_tools.invoke(messages)
+            return {"messages": state["messages"] + [resp]}
 
         return chatbot_node
+
 
