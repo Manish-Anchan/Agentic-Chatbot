@@ -1,4 +1,4 @@
-# LangGraph AgenticAI Application
+# Agentic-Chatbot
 
 A powerful, modular AI application built with LangGraph and Streamlit that supports multiple use cases including basic chatbot functionality, web-enabled chatbot, and AI news processing workflows.
 
